@@ -2,7 +2,6 @@
 from flask import Flask, request, jsonify, render_template
 import ast
 import re
-import os
 
 app = Flask(__name__)
 
@@ -10,16 +9,8 @@ APP_NAME = "CODEX AI"
 VERSION = "2.0.0"
 
 SUPPORTED_LANGUAGES = [
-    "Python",
-    "JavaScript",
-    "HTML",
-    "CSS",
-    "PHP",
-    "Java",
-    "C++",
-    "TypeScript",
-    "JSON",
-    "Unknown"
+    "Python", "JavaScript", "HTML", "CSS", "PHP",
+    "Java", "C++", "TypeScript", "JSON", "Unknown"
 ]
 
 
@@ -146,7 +137,7 @@ def explain_code(code, language):
 
             if clean.startswith("#"):
                 meaning = "Comment: explains the code without being executed."
-            elif clean.startswith("import ") or clean.startswith("from "):
+            elif clean.startswith(("import ", "from ")):
                 meaning = "Imports an external module or selected functionality."
             elif clean.startswith("def "):
                 meaning = "Defines a reusable function."
@@ -206,7 +197,9 @@ def explain_code(code, language):
             explanations.append(f"  Code: {clean}")
 
     explanations.append("")
-    explanations.append("Note: This is a local static explanation, not a full execution of your program.")
+    explanations.append(
+        "Note: This is a local static explanation, not a full execution of your program."
+    )
 
     return "\n".join(explanations)
 
@@ -220,7 +213,9 @@ def optimize_code(code, language):
     lines = code.splitlines()
 
     if len(lines) > 100:
-        suggestions.append("Consider splitting this file into smaller functions or modules.")
+        suggestions.append(
+            "Consider splitting this file into smaller functions or modules."
+        )
 
     if language == "Python":
         suggestions.append("Use meaningful variable and function names.")
@@ -361,6 +356,7 @@ def analyze():
 
     elif action == "optimize":
         suggestions = optimize_code(code, language)
+
         result = "\n".join(
             f"{number}. {item}"
             for number, item in enumerate(suggestions, start=1)

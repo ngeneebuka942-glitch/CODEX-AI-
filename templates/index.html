@@ -1,1123 +1,1096 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080b12">
-<title>CODEX AI — Developer Toolkit V2</title>
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
-:root {
-  --bg:#080b12;
-  --panel:#0e1420;
-  --panel2:#111a29;
-  --blue:#278cff;
-  --blue2:#54adff;
-  --text:#f3f7ff;
-  --muted:#8291a8;
-  --border:#1c2a3d;
-  --green:#32d99b;
-  --red:#ff5570;
-}
-
-* {
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-body {
-  background:var(--bg);
-  color:var(--text);
-  font-family:Inter,sans-serif;
-  min-height:100vh;
-  overflow-x:hidden;
-}
-
-button,textarea {font-family:inherit}
-button {cursor:pointer;border:none}
-button:active {transform:scale(.97)}
-
-.app {display:flex;min-height:100vh}
-
-.sidebar {
-  width:245px;
-  background:#0a0f19;
-  border-right:1px solid var(--border);
-  padding:25px 17px;
-  display:flex;
-  flex-direction:column;
-  flex-shrink:0;
-}
-
-.logo {
-  display:flex;
-  align-items:center;
-  gap:11px;
-  margin-bottom:42px;
-}
-
-.logo-icon {
-  width:39px;
-  height:39px;
-  border-radius:12px;
-  background:linear-gradient(135deg,#0877ff,#43b5ff);
-  display:grid;
-  place-items:center;
-  font-size:22px;
-  font-weight:800;
-  box-shadow:0 0 22px #278cff55;
-}
-
-.logo h2 {font-size:19px;letter-spacing:1px;font-weight:800}
-.logo span {color:var(--blue2)}
-.logo small {
-  display:block;
-  font-size:9px;
-  color:var(--muted);
-  letter-spacing:2px;
-  margin-top:3px;
-}
-
-.nav-label {
-  font-size:10px;
-  color:#64748b;
-  letter-spacing:1.7px;
-  font-weight:700;
-  margin:0 10px 13px;
-}
-
-.nav-btn {
-  width:100%;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:13px 12px;
-  color:#91a0b7;
-  background:transparent;
-  border-radius:10px;
-  text-align:left;
-  margin-bottom:5px;
-  font-size:13px;
-  transition:.25s;
-}
-
-.nav-btn:hover {background:#15243a;color:white}
-.nav-btn.active {
-  background:linear-gradient(90deg,#1477e72a,#1477e708);
-  color:#55adff;
-  border:1px solid #278cff28;
-}
-
-.nav-icon {font-size:17px;width:22px;text-align:center}
-.sidebar-bottom {margin-top:auto}
-
-.system-card {
-  background:linear-gradient(145deg,#10223b,#0d1523);
-  border:1px solid #1d395b;
-  padding:15px;
-  border-radius:13px;
-}
-
-.system-card small {color:var(--muted);font-size:10px}
-.system-status {
-  display:flex;
-  align-items:center;
-  gap:8px;
-  margin-top:9px;
-  font-size:12px;
-}
-
-.dot {
-  width:8px;
-  height:8px;
-  background:var(--green);
-  border-radius:50%;
-  box-shadow:0 0 10px var(--green);
-}
-
-.main {flex:1;min-width:0}
-
-.topbar {
-  height:75px;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 30px;
-  background:#0a0e17;
-  position:sticky;
-  top:0;
-  z-index:10;
-}
-
-.topbar h3 {font-size:14px;font-weight:600}
-.topbar small {
-  display:block;
-  color:var(--muted);
-  font-size:10px;
-  margin-top:4px;
-}
-
-.version {
-  padding:6px 10px;
-  border-radius:6px;
-  color:#57b0ff;
-  background:#1477e71a;
-  border:1px solid #278cff35;
-  font-size:10px;
-  font-weight:700;
-}
-
-.content {max-width:1250px;margin:auto;padding:34px 30px 55px}
-
-.hero {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:30px;
-  gap:15px;
-  animation:fadeUp .6s ease;
-}
-
-.eyebrow {
-  font-size:10px;
-  letter-spacing:2px;
-  color:var(--blue2);
-  font-weight:700;
-  margin-bottom:12px;
-}
-
-.hero h1 {
-  font-size:clamp(25px,4vw,36px);
-  font-weight:800;
-  letter-spacing:-1.5px;
-}
-
-.hero h1 span {color:var(--blue2)}
-.hero p {
-  color:var(--muted);
-  font-size:13px;
-  margin-top:10px;
-  line-height:1.7;
-}
-
-.hero-badge {
-  border:1px solid #1c385a;
-  background:#102039;
-  color:#65b5ff;
-  padding:11px 15px;
-  border-radius:10px;
-  font-size:11px;
-  white-space:nowrap;
-}
-
-.features {
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:13px;
-  margin-bottom:27px;
-}
-
-.feature {
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:13px;
-  padding:16px;
-  transition:.3s;
-  cursor:pointer;
-}
-
-.feature:hover {
-  transform:translateY(-4px);
-  border-color:#278cff88;
-  box-shadow:0 8px 25px #1477e713;
-}
-
-.feature-icon {
-  width:36px;
-  height:36px;
-  background:#1477e71c;
-  border-radius:10px;
-  display:grid;
-  place-items:center;
-  font-size:18px;
-  margin-bottom:13px;
-}
-
-.feature h4 {font-size:13px;margin-bottom:6px}
-.feature p {font-size:10px;color:var(--muted);line-height:1.6}
-
-.workspace {
-  display:grid;
-  grid-template-columns:1.15fr .85fr;
-  gap:17px;
-  align-items:stretch;
-}
-
-.panel {
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:14px;
-  overflow:hidden;
-  min-width:0;
-}
-
-.panel-head {
-  padding:17px 19px;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.panel-title {
-  display:flex;
-  align-items:center;
-  gap:9px;
-  font-size:13px;
-  font-weight:700;
-}
-
-.panel-title span {color:var(--blue2);font-size:16px}
-.panel-head small {color:var(--muted);font-size:10px}
-
-.editor-meta {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:11px 16px;
-  background:#0b111c;
-  border-bottom:1px solid var(--border);
-}
-
-.language {
-  color:#69b8ff;
-  background:#1477e71b;
-  border:1px solid #278cff35;
-  border-radius:5px;
-  padding:5px 9px;
-  font-size:10px;
-  font-weight:700;
-}
-
-.editor-meta small {color:var(--muted);font-size:10px}
-
-.editor-wrap {
-  position:relative;
-  display:flex;
-  height:310px;
-  background:#090e17;
-  overflow:hidden;
-}
-
-.line-numbers {
-  width:43px;
-  padding:17px 9px;
-  color:#52647e;
-  font:12px/21px 'JetBrains Mono',monospace;
-  text-align:right;
-  overflow:hidden;
-  user-select:none;
-  border-right:1px solid #172338;
-  flex-shrink:0;
-  z-index:2;
-}
-
-.code-area {
-  position:relative;
-  flex:1;
-  min-width:0;
-  height:100%;
-  overflow:hidden;
-}
-
-#highlightLayer,
-#codeInput {
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  margin:0;
-  padding:17px 14px;
-  border:0;
-  font:12px/21px 'JetBrains Mono',monospace;
-  tab-size:4;
-  white-space:pre;
-  overflow:auto;
-}
-
-#highlightLayer {
-  pointer-events:none;
-  color:#b9d9ff;
-  background:transparent;
-  overflow:hidden;
-}
-
-#codeInput {
-  resize:none;
-  outline:none;
-  background:transparent;
-  color:transparent;
-  -webkit-text-fill-color:transparent;
-  caret-color:#55aaff;
-  z-index:1;
-}
-
-#codeInput::selection {
-  background:#278cff55;
-  -webkit-text-fill-color:transparent;
-}
-
-#codeInput::placeholder {
-  color:#50617a;
-  -webkit-text-fill-color:#50617a;
-}
-
-.token-keyword {color:#c792ea}
-.token-string {color:#c3e88d}
-.token-comment {color:#64748b}
-.token-number {color:#f78c6c}
-.token-function {color:#82aaff}
-.token-tag {color:#ff8b9a}
-.token-operator {color:#89ddff}
-
-.editor-footer {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:11px 15px;
-  color:var(--muted);
-  font-size:10px;
-  border-top:1px solid var(--border);
-}
-
-.editor-tools {display:flex;gap:7px}
-
-.mini-btn {
-  background:#162337;
-  border:1px solid #233750;
-  color:#9abce1;
-  padding:7px 10px;
-  border-radius:7px;
-  font-size:10px;
-  transition:.2s;
-}
-
-.mini-btn:hover {background:#1b3a5d;color:white}
-
-.action-area {padding:15px;border-top:1px solid var(--border)}
-.action-grid {display:grid;grid-template-columns:1fr 1fr;gap:9px}
-
-.action-btn {
-  padding:12px 9px;
-  border-radius:9px;
-  background:#121e30;
-  color:#b4c7df;
-  border:1px solid #263b57;
-  font-size:11px;
-  font-weight:600;
-  transition:.25s;
-}
-
-.action-btn:hover {border-color:var(--blue);background:#142b47;color:white}
-
-.action-btn.primary {
-  grid-column:span 2;
-  color:white;
-  background:linear-gradient(100deg,#1268d5,#278cff);
-  border:none;
-  box-shadow:0 4px 18px #1477e72c;
-}
-
-.action-btn.primary:hover {box-shadow:0 0 24px #278cff77;filter:brightness(1.13)}
-
-.output-body {
-  min-height:310px;
-  padding:19px;
-  background:#0a101a;
-  overflow:auto;
-  max-height:460px;
-}
-
-.empty-state {
-  min-height:260px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-}
-
-.empty-icon {
-  width:65px;
-  height:65px;
-  border:1px solid #24466d;
-  background:#11243b;
-  border-radius:18px;
-  display:grid;
-  place-items:center;
-  font-size:28px;
-  margin-bottom:17px;
-  animation:float 3s ease-in-out infinite;
-}
-
-.empty-state h3 {font-size:14px;margin-bottom:8px}
-.empty-state p {
-  color:var(--muted);
-  font-size:11px;
-  max-width:230px;
-  line-height:1.7;
-}
-
-.result-text {
-  white-space:pre-wrap;
-  word-break:break-word;
-  color:#b9cde5;
-  font:12px/1.9 'JetBrains Mono',monospace;
-}
-
-.result-label {
-  color:#61b2ff;
-  font-size:10px;
-  font-weight:700;
-  letter-spacing:1.5px;
-  margin-bottom:15px;
-}
-
-.corrected-panel {
-  margin-top:20px;
-  border:1px solid #23466b;
-  border-radius:10px;
-  overflow:hidden;
-}
-
-.corrected-head {
-  padding:11px;
-  background:#102039;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:8px;
-  color:#74baff;
-  font-size:10px;
-  font-weight:700;
-}
-
-#correctedCode {
-  padding:14px;
-  white-space:pre;
-  overflow:auto;
-  max-height:300px;
-  color:#c3e88d;
-  font:11px/1.8 'JetBrains Mono',monospace;
-}
-
-.result-actions {
-  display:flex;
-  gap:8px;
-  padding:13px 15px;
-  border-top:1px solid var(--border);
-}
-
-.result-actions button {flex:1}
-
-.loading-state {
-  min-height:260px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:15px;
-}
-
-.loader {
-  width:43px;
-  height:43px;
-  border:3px solid #1b2c43;
-  border-top-color:var(--blue2);
-  border-radius:50%;
-  animation:spin .8s linear infinite;
-  box-shadow:0 0 18px #278cff33;
-}
-
-.loading-state p {
-  color:#76baff;
-  font-size:12px;
-  animation:pulse 1s infinite;
-}
-
-.toast {
-  position:fixed;
-  bottom:25px;
-  left:50%;
-  transform:translate(-50%,20px);
-  background:#14243a;
-  border:1px solid #31547a;
-  color:white;
-  padding:13px 19px;
-  border-radius:10px;
-  font-size:12px;
-  z-index:100;
-  opacity:0;
-  pointer-events:none;
-  transition:.3s;
-  box-shadow:0 8px 30px #0008;
-}
-
-.toast.show {opacity:1;transform:translate(-50%,0)}
-.toast.success {border-color:#238c69}
-.toast.error {border-color:#d84b63}
-
-.footer {
-  text-align:center;
-  color:#596a81;
-  font-size:10px;
-  padding:30px 10px 5px;
-}
-
-.footer span {color:#56aaff}
-.hidden {display:none!important}
-
-@keyframes spin {to {transform:rotate(360deg)}}
-@keyframes float {0%,100% {transform:translateY(0)}50% {transform:translateY(-7px)}}
-@keyframes pulse {50% {opacity:.5}}
-@keyframes fadeUp {from {opacity:0;transform:translateY(15px)}to {opacity:1;transform:translateY(0)}}
-
-@media(max-width:900px) {
-  .sidebar {width:205px}
-  .workspace {grid-template-columns:1fr}
-}
-
-@media(max-width:650px) {
-  .sidebar {display:none}
-  .topbar {height:64px;padding:0 17px}
-  .content {padding:25px 15px 35px}
-  .hero {align-items:flex-start}
-  .hero-badge {display:none}
-  .features {grid-template-columns:repeat(2,1fr);gap:8px}
-  .feature {padding:11px 9px}
-  .feature-icon {width:30px;height:30px;font-size:15px}
-  .feature h4 {font-size:10px}
-  .feature p {font-size:9px}
-  .editor-wrap {height:275px}
-  .panel-head {padding:14px}
-  .action-btn {font-size:10px}
-  .bottom-nav {display:flex}
-  .footer {padding-bottom:75px}
-}
-
-.bottom-nav {
-  display:none;
-  position:fixed;
-  bottom:0;
-  left:0;
-  width:100%;
-  background:#0b111d;
-  border-top:1px solid var(--border);
-  justify-content:space-around;
-  padding:10px 5px calc(10px + env(safe-area-inset-bottom));
-  z-index:20;
-}
-
-.bottom-nav button {
-  background:transparent;
-  color:#8291a8;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:4px;
-  font-size:9px;
-}
-
-.bottom-nav button span {font-size:18px}
-.bottom-nav button.active {color:#55adff}
-</style>
-</head>
-
-<body>
-<div class="app">
-
-<aside class="sidebar">
-  <div class="logo">
-    <div class="logo-icon">⌘</div>
-    <div>
-      <h2>CODEX<span> AI</span></h2>
-      <small>DEVELOPER TOOLKIT</small>
-    </div>
-  </div>
-
-  <div class="nav-label">WORKSPACE</div>
-  <button class="nav-btn active" data-nav="workspace"><span class="nav-icon">⌘</span> Code Workspace</button>
-  <button class="nav-btn" data-nav="explain"><span class="nav-icon">◈</span> Explain Code</button>
-  <button class="nav-btn" data-nav="errors"><span class="nav-icon">⌕</span> Error Detector</button>
-  <button class="nav-btn" data-nav="optimize"><span class="nav-icon">⚡</span> Code Optimizer</button>
-  <button class="nav-btn" data-nav="fix"><span class="nav-icon">✧</span> Auto Fix</button>
-
-  <div class="nav-label" style="margin-top:30px">SYSTEM</div>
-  <button class="nav-btn" data-nav="about"><span class="nav-icon">ⓘ</span> About CODEX</button>
-
-  <div class="sidebar-bottom">
-    <div class="system-card">
-      <small>SYSTEM STATUS</small>
-      <div class="system-status"><span class="dot"></span> Local Engine Active</div>
-    </div>
-  </div>
-</aside>
-
-<main class="main">
-  <header class="topbar">
-    <div>
-      <h3>Developer Workspace</h3>
-      <small>Advanced code intelligence</small>
-    </div>
-    <div class="version">V2.0.0</div>
-  </header>
-
-  <div class="content">
-    <section class="hero">
-      <div>
-        <div class="eyebrow">✦ ADVANCED CODE INTELLIGENCE</div>
-        <h1>Build smarter with <span>CODEX.</span></h1>
-        <p>Analyze, understand, correct and improve your code in one workspace.</p>
-      </div>
-      <div class="hero-badge">● FREE LOCAL ENGINE</div>
-    </section>
-
-    <section class="features">
-      <div class="feature" data-action="explain">
-        <div class="feature-icon">◈</div>
-        <h4>Explain Code</h4>
-        <p>Understand your code line by line.</p>
-      </div>
-      <div class="feature" data-action="errors">
-        <div class="feature-icon">⌕</div>
-        <h4>Find Errors</h4>
-        <p>Scan for potential problems.</p>
-      </div>
-      <div class="feature" data-action="optimize">
-        <div class="feature-icon">⚡</div>
-        <h4>Optimize</h4>
-        <p>Discover improvement opportunities.</p>
-      </div>
-      <div class="feature" data-action="fix">
-        <div class="feature-icon">✧</div>
-        <h4>Auto Fix</h4>
-        <p>Apply safe automatic corrections.</p>
-      </div>
-    </section>
-
-    <section class="workspace">
-      <div class="panel">
-        <div class="panel-head">
-          <div class="panel-title"><span>⌘</span> Code Editor</div>
-          <small>INPUT SOURCE</small>
-        </div>
-
-        <div class="editor-meta">
-          <span class="language" id="languageBadge">AUTO DETECT</span>
-          <small id="editorStatus">Ready to analyze</small>
-        </div>
-
-        <div class="editor-wrap">
-          <div class="line-numbers" id="lineNumbers">1</div>
-          <div class="code-area">
-            <pre id="highlightLayer" aria-hidden="true"></pre>
-            <textarea id="codeInput"
-              spellcheck="false"
-              autocapitalize="off"
-              autocomplete="off"
-              autocorrect="off"
-              placeholder="# Paste your code here...
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<meta name="theme-color" content="#080b12">  
+<title>CODEX AI — Developer Toolkit V2</title>  <style>  
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');  
+  
+:root {  
+  --bg:#080b12;  
+  --panel:#0e1420;  
+  --panel2:#111a29;  
+  --blue:#278cff;  
+  --blue2:#54adff;  
+  --text:#f3f7ff;  
+  --muted:#8291a8;  
+  --border:#1c2a3d;  
+  --green:#32d99b;  
+  --red:#ff5570;  
+}  
+  
+* {  
+  box-sizing:border-box;  
+  margin:0;  
+  padding:0;  
+}  
+  
+body {  
+  background:var(--bg);  
+  color:var(--text);  
+  font-family:Inter,sans-serif;  
+  min-height:100vh;  
+  overflow-x:hidden;  
+}  
+  
+button,textarea {font-family:inherit}  
+button {cursor:pointer;border:none}  
+button:active {transform:scale(.97)}  
+  
+.app {display:flex;min-height:100vh}  
+  
+.sidebar {  
+  width:245px;  
+  background:#0a0f19;  
+  border-right:1px solid var(--border);  
+  padding:25px 17px;  
+  display:flex;  
+  flex-direction:column;  
+  flex-shrink:0;  
+}  
+  
+.logo {  
+  display:flex;  
+  align-items:center;  
+  gap:11px;  
+  margin-bottom:42px;  
+}  
+  
+.logo-icon {  
+  width:39px;  
+  height:39px;  
+  border-radius:12px;  
+  background:linear-gradient(135deg,#0877ff,#43b5ff);  
+  display:grid;  
+  place-items:center;  
+  font-size:22px;  
+  font-weight:800;  
+  box-shadow:0 0 22px #278cff55;  
+}  
+  
+.logo h2 {font-size:19px;letter-spacing:1px;font-weight:800}  
+.logo span {color:var(--blue2)}  
+.logo small {  
+  display:block;  
+  font-size:9px;  
+  color:var(--muted);  
+  letter-spacing:2px;  
+  margin-top:3px;  
+}  
+  
+.nav-label {  
+  font-size:10px;  
+  color:#64748b;  
+  letter-spacing:1.7px;  
+  font-weight:700;  
+  margin:0 10px 13px;  
+}  
+  
+.nav-btn {  
+  width:100%;  
+  display:flex;  
+  align-items:center;  
+  gap:12px;  
+  padding:13px 12px;  
+  color:#91a0b7;  
+  background:transparent;  
+  border-radius:10px;  
+  text-align:left;  
+  margin-bottom:5px;  
+  font-size:13px;  
+  transition:.25s;  
+}  
+  
+.nav-btn:hover {background:#15243a;color:white}  
+.nav-btn.active {  
+  background:linear-gradient(90deg,#1477e72a,#1477e708);  
+  color:#55adff;  
+  border:1px solid #278cff28;  
+}  
+  
+.nav-icon {font-size:17px;width:22px;text-align:center}  
+.sidebar-bottom {margin-top:auto}  
+  
+.system-card {  
+  background:linear-gradient(145deg,#10223b,#0d1523);  
+  border:1px solid #1d395b;  
+  padding:15px;  
+  border-radius:13px;  
+}  
+  
+.system-card small {color:var(--muted);font-size:10px}  
+.system-status {  
+  display:flex;  
+  align-items:center;  
+  gap:8px;  
+  margin-top:9px;  
+  font-size:12px;  
+}  
+  
+.dot {  
+  width:8px;  
+  height:8px;  
+  background:var(--green);  
+  border-radius:50%;  
+  box-shadow:0 0 10px var(--green);  
+}  
+  
+.main {flex:1;min-width:0}  
+  
+.topbar {  
+  height:75px;  
+  border-bottom:1px solid var(--border);  
+  display:flex;  
+  align-items:center;  
+  justify-content:space-between;  
+  padding:0 30px;  
+  background:#0a0e17;  
+  position:sticky;  
+  top:0;  
+  z-index:10;  
+}  
+  
+.topbar h3 {font-size:14px;font-weight:600}  
+.topbar small {  
+  display:block;  
+  color:var(--muted);  
+  font-size:10px;  
+  margin-top:4px;  
+}  
+  
+.version {  
+  padding:6px 10px;  
+  border-radius:6px;  
+  color:#57b0ff;  
+  background:#1477e71a;  
+  border:1px solid #278cff35;  
+  font-size:10px;  
+  font-weight:700;  
+}  
+  
+.content {max-width:1250px;margin:auto;padding:34px 30px 55px}  
+  
+.hero {  
+  display:flex;  
+  justify-content:space-between;  
+  align-items:center;  
+  margin-bottom:30px;  
+  gap:15px;  
+  animation:fadeUp .6s ease;  
+}  
+  
+.eyebrow {  
+  font-size:10px;  
+  letter-spacing:2px;  
+  color:var(--blue2);  
+  font-weight:700;  
+  margin-bottom:12px;  
+}  
+  
+.hero h1 {  
+  font-size:clamp(25px,4vw,36px);  
+  font-weight:800;  
+  letter-spacing:-1.5px;  
+}  
+  
+.hero h1 span {color:var(--blue2)}  
+.hero p {  
+  color:var(--muted);  
+  font-size:13px;  
+  margin-top:10px;  
+  line-height:1.7;  
+}  
+  
+.hero-badge {  
+  border:1px solid #1c385a;  
+  background:#102039;  
+  color:#65b5ff;  
+  padding:11px 15px;  
+  border-radius:10px;  
+  font-size:11px;  
+  white-space:nowrap;  
+}  
+  
+.features {  
+  display:grid;  
+  grid-template-columns:repeat(4,1fr);  
+  gap:13px;  
+  margin-bottom:27px;  
+}  
+  
+.feature {  
+  background:var(--panel);  
+  border:1px solid var(--border);  
+  border-radius:13px;  
+  padding:16px;  
+  transition:.3s;  
+  cursor:pointer;  
+}  
+  
+.feature:hover {  
+  transform:translateY(-4px);  
+  border-color:#278cff88;  
+  box-shadow:0 8px 25px #1477e713;  
+}  
+  
+.feature-icon {  
+  width:36px;  
+  height:36px;  
+  background:#1477e71c;  
+  border-radius:10px;  
+  display:grid;  
+  place-items:center;  
+  font-size:18px;  
+  margin-bottom:13px;  
+}  
+  
+.feature h4 {font-size:13px;margin-bottom:6px}  
+.feature p {font-size:10px;color:var(--muted);line-height:1.6}  
+  
+.workspace {  
+  display:grid;  
+  grid-template-columns:1.15fr .85fr;  
+  gap:17px;  
+  align-items:stretch;  
+}  
+  
+.panel {  
+  background:var(--panel);  
+  border:1px solid var(--border);  
+  border-radius:14px;  
+  overflow:hidden;  
+  min-width:0;  
+}  
+  
+.panel-head {  
+  padding:17px 19px;  
+  border-bottom:1px solid var(--border);  
+  display:flex;  
+  align-items:center;  
+  justify-content:space-between;  
+  gap:10px;  
+}  
+  
+.panel-title {  
+  display:flex;  
+  align-items:center;  
+  gap:9px;  
+  font-size:13px;  
+  font-weight:700;  
+}  
+  
+.panel-title span {color:var(--blue2);font-size:16px}  
+.panel-head small {color:var(--muted);font-size:10px}  
+  
+.editor-meta {  
+  display:flex;  
+  align-items:center;  
+  justify-content:space-between;  
+  padding:11px 16px;  
+  background:#0b111c;  
+  border-bottom:1px solid var(--border);  
+}  
+  
+.language {  
+  color:#69b8ff;  
+  background:#1477e71b;  
+  border:1px solid #278cff35;  
+  border-radius:5px;  
+  padding:5px 9px;  
+  font-size:10px;  
+  font-weight:700;  
+}  
+  
+.editor-meta small {color:var(--muted);font-size:10px}  
+  
+.editor-wrap {  
+  position:relative;  
+  display:flex;  
+  height:310px;  
+  background:#090e17;  
+  overflow:hidden;  
+}  
+  
+.line-numbers {  
+  width:43px;  
+  padding:17px 9px;  
+  color:#52647e;  
+  font:12px/21px 'JetBrains Mono',monospace;  
+  text-align:right;  
+  overflow:hidden;  
+  user-select:none;  
+  border-right:1px solid #172338;  
+  flex-shrink:0;  
+  z-index:2;  
+}  
+  
+.code-area {  
+  position:relative;  
+  flex:1;  
+  min-width:0;  
+  height:100%;  
+  overflow:hidden;  
+}  
+  
+#highlightLayer,  
+#codeInput {  
+  position:absolute;  
+  inset:0;  
+  width:100%;  
+  height:100%;  
+  margin:0;  
+  padding:17px 14px;  
+  border:0;  
+  font:12px/21px 'JetBrains Mono',monospace;  
+  tab-size:4;  
+  white-space:pre;  
+  overflow:auto;  
+}  
+  
+#highlightLayer {  
+  pointer-events:none;  
+  color:#b9d9ff;  
+  background:transparent;  
+  overflow:hidden;  
+}  
+  
+#codeInput {  
+  resize:none;  
+  outline:none;  
+  background:transparent;  
+  color:transparent;  
+  -webkit-text-fill-color:transparent;  
+  caret-color:#55aaff;  
+  z-index:1;  
+}  
+  
+#codeInput::selection {  
+  background:#278cff55;  
+  -webkit-text-fill-color:transparent;  
+}  
+  
+#codeInput::placeholder {  
+  color:#50617a;  
+  -webkit-text-fill-color:#50617a;  
+}  
+  
+.token-keyword {color:#c792ea}  
+.token-string {color:#c3e88d}  
+.token-comment {color:#64748b}  
+.token-number {color:#f78c6c}  
+.token-function {color:#82aaff}  
+.token-tag {color:#ff8b9a}  
+.token-operator {color:#89ddff}  
+  
+.editor-footer {  
+  display:flex;  
+  align-items:center;  
+  justify-content:space-between;  
+  padding:11px 15px;  
+  color:var(--muted);  
+  font-size:10px;  
+  border-top:1px solid var(--border);  
+}  
+  
+.editor-tools {display:flex;gap:7px}  
+  
+.mini-btn {  
+  background:#162337;  
+  border:1px solid #233750;  
+  color:#9abce1;  
+  padding:7px 10px;  
+  border-radius:7px;  
+  font-size:10px;  
+  transition:.2s;  
+}  
+  
+.mini-btn:hover {background:#1b3a5d;color:white}  
+  
+.action-area {padding:15px;border-top:1px solid var(--border)}  
+.action-grid {display:grid;grid-template-columns:1fr 1fr;gap:9px}  
+  
+.action-btn {  
+  padding:12px 9px;  
+  border-radius:9px;  
+  background:#121e30;  
+  color:#b4c7df;  
+  border:1px solid #263b57;  
+  font-size:11px;  
+  font-weight:600;  
+  transition:.25s;  
+}  
+  
+.action-btn:hover {border-color:var(--blue);background:#142b47;color:white}  
+  
+.action-btn.primary {  
+  grid-column:span 2;  
+  color:white;  
+  background:linear-gradient(100deg,#1268d5,#278cff);  
+  border:none;  
+  box-shadow:0 4px 18px #1477e72c;  
+}  
+  
+.action-btn.primary:hover {box-shadow:0 0 24px #278cff77;filter:brightness(1.13)}  
+  
+.output-body {  
+  min-height:310px;  
+  padding:19px;  
+  background:#0a101a;  
+  overflow:auto;  
+  max-height:460px;  
+}  
+  
+.empty-state {  
+  min-height:260px;  
+  display:flex;  
+  flex-direction:column;  
+  align-items:center;  
+  justify-content:center;  
+  text-align:center;  
+}  
+  
+.empty-icon {  
+  width:65px;  
+  height:65px;  
+  border:1px solid #24466d;  
+  background:#11243b;  
+  border-radius:18px;  
+  display:grid;  
+  place-items:center;  
+  font-size:28px;  
+  margin-bottom:17px;  
+  animation:float 3s ease-in-out infinite;  
+}  
+  
+.empty-state h3 {font-size:14px;margin-bottom:8px}  
+.empty-state p {  
+  color:var(--muted);  
+  font-size:11px;  
+  max-width:230px;  
+  line-height:1.7;  
+}  
+  
+.result-text {  
+  white-space:pre-wrap;  
+  word-break:break-word;  
+  color:#b9cde5;  
+  font:12px/1.9 'JetBrains Mono',monospace;  
+}  
+  
+.result-label {  
+  color:#61b2ff;  
+  font-size:10px;  
+  font-weight:700;  
+  letter-spacing:1.5px;  
+  margin-bottom:15px;  
+}  
+  
+.corrected-panel {  
+  margin-top:20px;  
+  border:1px solid #23466b;  
+  border-radius:10px;  
+  overflow:hidden;  
+}  
+  
+.corrected-head {  
+  padding:11px;  
+  background:#102039;  
+  display:flex;  
+  justify-content:space-between;  
+  align-items:center;  
+  gap:8px;  
+  color:#74baff;  
+  font-size:10px;  
+  font-weight:700;  
+}  
+  
+#correctedCode {  
+  padding:14px;  
+  white-space:pre;  
+  overflow:auto;  
+  max-height:300px;  
+  color:#c3e88d;  
+  font:11px/1.8 'JetBrains Mono',monospace;  
+}  
+  
+.result-actions {  
+  display:flex;  
+  gap:8px;  
+  padding:13px 15px;  
+  border-top:1px solid var(--border);  
+}  
+  
+.result-actions button {flex:1}  
+  
+.loading-state {  
+  min-height:260px;  
+  display:flex;  
+  flex-direction:column;  
+  align-items:center;  
+  justify-content:center;  
+  gap:15px;  
+}  
+  
+.loader {  
+  width:43px;  
+  height:43px;  
+  border:3px solid #1b2c43;  
+  border-top-color:var(--blue2);  
+  border-radius:50%;  
+  animation:spin .8s linear infinite;  
+  box-shadow:0 0 18px #278cff33;  
+}  
+  
+.loading-state p {  
+  color:#76baff;  
+  font-size:12px;  
+  animation:pulse 1s infinite;  
+}  
+  
+.toast {  
+  position:fixed;  
+  bottom:25px;  
+  left:50%;  
+  transform:translate(-50%,20px);  
+  background:#14243a;  
+  border:1px solid #31547a;  
+  color:white;  
+  padding:13px 19px;  
+  border-radius:10px;  
+  font-size:12px;  
+  z-index:100;  
+  opacity:0;  
+  pointer-events:none;  
+  transition:.3s;  
+  box-shadow:0 8px 30px #0008;  
+}  
+  
+.toast.show {opacity:1;transform:translate(-50%,0)}  
+.toast.success {border-color:#238c69}  
+.toast.error {border-color:#d84b63}  
+  
+.footer {  
+  text-align:center;  
+  color:#596a81;  
+  font-size:10px;  
+  padding:30px 10px 5px;  
+}  
+  
+.footer span {color:#56aaff}  
+.hidden {display:none!important}  
+  
+@keyframes spin {to {transform:rotate(360deg)}}  
+@keyframes float {0%,100% {transform:translateY(0)}50% {transform:translateY(-7px)}}  
+@keyframes pulse {50% {opacity:.5}}  
+@keyframes fadeUp {from {opacity:0;transform:translateY(15px)}to {opacity:1;transform:translateY(0)}}  
+  
+@media(max-width:900px) {  
+  .sidebar {width:205px}  
+  .workspace {grid-template-columns:1fr}  
+}  
+  
+@media(max-width:650px) {  
+  .sidebar {display:none}  
+  .topbar {height:64px;padding:0 17px}  
+  .content {padding:25px 15px 35px}  
+  .hero {align-items:flex-start}  
+  .hero-badge {display:none}  
+  .features {grid-template-columns:repeat(2,1fr);gap:8px}  
+  .feature {padding:11px 9px}  
+  .feature-icon {width:30px;height:30px;font-size:15px}  
+  .feature h4 {font-size:10px}  
+  .feature p {font-size:9px}  
+  .editor-wrap {height:275px}  
+  .panel-head {padding:14px}  
+  .action-btn {font-size:10px}  
+  .bottom-nav {display:flex}  
+  .footer {padding-bottom:75px}  
+}  
+  
+.bottom-nav {  
+  display:none;  
+  position:fixed;  
+  bottom:0;  
+  left:0;  
+  width:100%;  
+  background:#0b111d;  
+  border-top:1px solid var(--border);  
+  justify-content:space-around;  
+  padding:10px 5px calc(10px + env(safe-area-inset-bottom));  
+  z-index:20;  
+}  
+  
+.bottom-nav button {  
+  background:transparent;  
+  color:#8291a8;  
+  display:flex;  
+  flex-direction:column;  
+  align-items:center;  
+  gap:4px;  
+  font-size:9px;  
+}  
+  
+.bottom-nav button span {font-size:18px}  
+.bottom-nav button.active {color:#55adff}  
+</style>  </head>  <body>  
+<div class="app">  <aside class="sidebar">  
+  <div class="logo">  
+    <div class="logo-icon">⌘</div>  
+    <div>  
+      <h2>CODEX<span> AI</span></h2>  
+      <small>DEVELOPER TOOLKIT</small>  
+    </div>  
+  </div>    <div class="nav-label">WORKSPACE</div>  
+  <button class="nav-btn active" data-nav="workspace"><span class="nav-icon">⌘</span> Code Workspace</button>  
+  <button class="nav-btn" data-nav="explain"><span class="nav-icon">◈</span> Explain Code</button>  
+  <button class="nav-btn" data-nav="errors"><span class="nav-icon">⌕</span> Error Detector</button>  
+  <button class="nav-btn" data-nav="optimize"><span class="nav-icon">⚡</span> Code Optimizer</button>  
+  <button class="nav-btn" data-nav="fix"><span class="nav-icon">✧</span> Auto Fix</button>    <div class="nav-label" style="margin-top:30px">SYSTEM</div>  
+  <button class="nav-btn" data-nav="about"><span class="nav-icon">ⓘ</span> About CODEX</button>    <div class="sidebar-bottom">  
+    <div class="system-card">  
+      <small>SYSTEM STATUS</small>  
+      <div class="system-status"><span class="dot"></span> Local Engine Active</div>  
+    </div>  
+  </div>  
+</aside>  <main class="main">  
+  <header class="topbar">  
+    <div>  
+      <h3>Developer Workspace</h3>  
+      <small>Advanced code intelligence</small>  
+    </div>  
+    <div class="version">V2.0.0</div>  
+  </header>    <div class="content">  
+    <section class="hero">  
+      <div>  
+        <div class="eyebrow">✦ ADVANCED CODE INTELLIGENCE</div>  
+        <h1>Build smarter with <span>CODEX.</span></h1>  
+        <p>Analyze, understand, correct and improve your code in one workspace.</p>  
+      </div>  
+      <div class="hero-badge">● FREE LOCAL ENGINE</div>  
+    </section>  <section class="features">  
+  <div class="feature" data-action="explain">  
+    <div class="feature-icon">◈</div>  
+    <h4>Explain Code</h4>  
+    <p>Understand your code line by line.</p>  
+  </div>  
+  <div class="feature" data-action="errors">  
+    <div class="feature-icon">⌕</div>  
+    <h4>Find Errors</h4>  
+    <p>Scan for potential problems.</p>  
+  </div>  
+  <div class="feature" data-action="optimize">  
+    <div class="feature-icon">⚡</div>  
+    <h4>Optimize</h4>  
+    <p>Discover improvement opportunities.</p>  
+  </div>  
+  <div class="feature" data-action="fix">  
+    <div class="feature-icon">✧</div>  
+    <h4>Auto Fix</h4>  
+    <p>Apply safe automatic corrections.</p>  
+  </div>  
+</section>  
+
+<section class="workspace">  
+  <div class="panel">  
+    <div class="panel-head">  
+      <div class="panel-title"><span>⌘</span> Code Editor</div>  
+      <small>INPUT SOURCE</small>  
+    </div>  
+
+    <div class="editor-meta">  
+      <span class="language" id="languageBadge">AUTO DETECT</span>  
+      <small id="editorStatus">Ready to analyze</small>  
+    </div>  
+
+    <div class="editor-wrap">  
+      <div class="line-numbers" id="lineNumbers">1</div>  
+      <div class="code-area">  
+        <pre id="highlightLayer" aria-hidden="true"></pre>  
+        <textarea id="codeInput"  
+          spellcheck="false"  
+          autocapitalize="off"  
+          autocomplete="off"  
+          autocorrect="off"  
+          placeholder="# Paste your code here...
 
 def greet(name):
-    print('Hello', name)
+print('Hello', name)
 
 greet('Developer')"></textarea>
-          </div>
-        </div>
-
-        <div class="editor-footer">
-          <span id="lineCount">0 lines · 0 characters</span>
-          <div class="editor-tools">
-            <button class="mini-btn" id="sampleBtn">Sample</button>
-            <button class="mini-btn" id="clearBtn">Clear</button>
-          </div>
-        </div>
-
-        <div class="action-area">
-          <div class="action-grid">
-            <button class="action-btn primary" data-action="explain">◈ &nbsp; EXPLAIN CODE</button>
-            <button class="action-btn" data-action="errors">⌕ &nbsp; FIND ERRORS</button>
-            <button class="action-btn" data-action="optimize">⚡ &nbsp; OPTIMIZE</button>
-            <button class="action-btn" data-action="fix">✧ &nbsp; AUTO FIX CODE</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="panel-head">
-          <div class="panel-title"><span>✦</span> Analysis Results</div>
-          <small id="resultStatus">WAITING</small>
-        </div>
-
-        <div class="output-body" id="outputBody">
-          <div class="empty-state" id="emptyState">
-            <div class="empty-icon">⌘</div>
-            <h3>Ready when you are</h3>
-            <p>Paste your code and select an analysis tool to get started.</p>
-          </div>
-
-          <div class="loading-state hidden" id="loadingState">
-            <div class="loader"></div>
-            <p id="loadingText">Analyzing your code...</p>
-          </div>
-
-          <div class="hidden" id="resultState">
-            <div class="result-label">✦ CODEX ANALYSIS REPORT</div>
-            <pre class="result-text" id="resultText"></pre>
-
-            <div class="corrected-panel hidden" id="correctedPanel">
-              <div class="corrected-head">
-                <span>CORRECTED CODE</span>
-                <button class="mini-btn" id="copyCorrectedBtn">Copy Code</button>
-              </div>
-              <pre id="correctedCode"></pre>
-            </div>
-          </div>
-        </div>
-
-        <div class="result-actions">
-          <button class="mini-btn" id="copyBtn">▣ Copy Result</button>
-          <button class="mini-btn" id="downloadBtn">↓ Export Report</button>
-        </div>
-      </div>
-    </section>
-
-    <div class="footer">
-      POWERED BY <span>CODEX AI</span> · V2.0.0 · BUILT FOR DEVELOPERS
-    </div>
-  </div>
-</main>
+</div>
 </div>
 
-<nav class="bottom-nav">
-  <button class="active" data-nav="workspace"><span>⌘</span>Workspace</button>
-  <button data-nav="explain"><span>◈</span>Explain</button>
-  <button data-nav="errors"><span>⌕</span>Errors</button>
-  <button data-nav="optimize"><span>⚡</span>Optimize</button>
-  <button data-nav="fix"><span>✧</span>Fix</button>
-</nav>
+<div class="editor-footer">  
+      <span id="lineCount">0 lines · 0 characters</span>  
+      <div class="editor-tools">  
+        <button class="mini-btn" id="sampleBtn">Sample</button>  
+        <button class="mini-btn" id="clearBtn">Clear</button>  
+      </div>  
+    </div>  
 
-<div class="toast" id="toast"></div>
+    <div class="action-area">  
+      <div class="action-grid">  
+        <button class="action-btn primary" data-action="explain">◈ &nbsp; EXPLAIN CODE</button>  
+        <button class="action-btn" data-action="errors">⌕ &nbsp; FIND ERRORS</button>  
+        <button class="action-btn" data-action="optimize">⚡ &nbsp; OPTIMIZE</button>  
+        <button class="action-btn" data-action="fix">✧ &nbsp; AUTO FIX CODE</button>  
+      </div>  
+    </div>  
+  </div>  
 
-<script>
-const $ = id => document.getElementById(id);
-const codeInput = $("codeInput");
+  <div class="panel">  
+    <div class="panel-head">  
+      <div class="panel-title"><span>✦</span> Analysis Results</div>  
+      <small id="resultStatus">WAITING</small>  
+    </div>  
 
-let currentResult = "";
-let currentAction = "explain";
-let correctedCode = "";
-let toastTimer;
+    <div class="output-body" id="outputBody">  
+      <div class="empty-state" id="emptyState">  
+        <div class="empty-icon">⌘</div>  
+        <h3>Ready when you are</h3>  
+        <p>Paste your code and select an analysis tool to get started.</p>  
+      </div>  
 
-function vibrate(pattern = 15) {
-  if ("vibrate" in navigator) navigator.vibrate(pattern);
-}
+      <div class="loading-state hidden" id="loadingState">  
+        <div class="loader"></div>  
+        <p id="loadingText">Analyzing your code...</p>  
+      </div>  
 
-function showToast(message, type = "success") {
-  const toast = $("toast");
-  toast.textContent = message;
-  toast.className = "toast show " + type;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.className = "toast", 2600);
-}
+      <div class="hidden" id="resultState">  
+        <div class="result-label">✦ CODEX ANALYSIS REPORT</div>  
+        <pre class="result-text" id="resultText"></pre>  
 
-function escapeHTML(value) {
-  return value.replace(/[&<>"']/g, char => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
-  })[char]);
-}
+        <div class="corrected-panel hidden" id="correctedPanel">  
+          <div class="corrected-head">  
+            <span>CORRECTED CODE</span>  
+            <button class="mini-btn" id="copyCorrectedBtn">Copy Code</button>  
+          </div>  
+          <pre id="correctedCode"></pre>  
+        </div>  
+      </div>  
+    </div>  
 
-function highlightCode(code) {
-  const escaped = escapeHTML(code);
-  const pattern = /(\/\/.*|#.*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|(\b(?:const|let|var|function|return|if|else|for|while|class|new|this|import|from|export|default|async|await|try|catch|throw|def|print|in|not|and|or|True|False|None|public|private|static|void|int|string|echo|include)\b)|(\b\d+(?:\.\d+)?\b)|(<\/?[\w-]+)|(\b[\w$]+(?=\s*\())/g;
+    <div class="result-actions">  
+      <button class="mini-btn" id="copyBtn">▣ Copy Result</button>  
+      <button class="mini-btn" id="downloadBtn">↓ Export Report</button>  
+    </div>  
+  </div>  
+</section>  
 
-  return escaped.replace(pattern, (match, comment, string, keyword, number, tag, func) => {
-    if (comment) return `<span class="token-comment">${comment}</span>`;
-    if (string) return `<span class="token-string">${string}</span>`;
-    if (keyword) return `<span class="token-keyword">${keyword}</span>`;
-    if (number) return `<span class="token-number">${number}</span>`;
-    if (tag) return `<span class="token-tag">${tag}</span>`;
-    if (func) return `<span class="token-function">${func}</span>`;
-    return match;
-  });
-}
+<div class="footer">  
+  POWERED BY <span>CODEX AI</span> · V2.0.0 · BUILT FOR DEVELOPERS  
+</div>
 
-function updateEditor() {
-  const code = codeInput.value;
-  const lines = code.split("\n");
-
-  $("lineNumbers").textContent = lines.map((_, i) => i + 1).join("\n");
-  $("lineCount").textContent = `${lines.length} lines · ${code.length} characters`;
-  $("editorStatus").textContent = code.trim() ? "Code entered" : "Ready to analyze";
-
-  $("highlightLayer").innerHTML = highlightCode(code) + (code.endsWith("\n") ? " " : "");
-  $("highlightLayer").scrollTop = codeInput.scrollTop;
-  $("highlightLayer").scrollLeft = codeInput.scrollLeft;
-  $("lineNumbers").scrollTop = codeInput.scrollTop;
-
-  if (!code.trim()) $("languageBadge").textContent = "AUTO DETECT";
-}
-
-codeInput.addEventListener("input", updateEditor);
-
-codeInput.addEventListener("scroll", () => {
-  $("highlightLayer").scrollTop = codeInput.scrollTop;
-  $("highlightLayer").scrollLeft = codeInput.scrollLeft;
-  $("lineNumbers").scrollTop = codeInput.scrollTop;
-});
-
-codeInput.addEventListener("keydown", event => {
-  if (event.key === "Tab") {
-    event.preventDefault();
-    const start = codeInput.selectionStart;
-    const end = codeInput.selectionEnd;
-    codeInput.setRangeText("    ", start, end, "end");
-    updateEditor();
-  }
-
-  if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
-    event.preventDefault();
-    analyzeCode("explain");
-  }
-});
-
-function showResult() {
-  $("emptyState").classList.add("hidden");
-  $("loadingState").classList.add("hidden");
-  $("resultState").classList.remove("hidden");
-}
-
-function showLoading(message) {
-  $("emptyState").classList.add("hidden");
-  $("resultState").classList.add("hidden");
-  $("loadingState").classList.remove("hidden");
-  $("loadingText").textContent = message;
-  $("resultStatus").textContent = "PROCESSING";
-}
-
-async function analyzeCode(action) {
-  const code = codeInput.value;
-
-  if (!code.trim()) {
-    vibrate([30,40,30]);
-    showToast("Please enter some code first.", "error");
-    codeInput.focus();
-    return;
-  }
-
-  vibrate(18);
-  currentAction = action;
-  currentResult = "";
-  correctedCode = "";
-
-  $("correctedPanel").classList.add("hidden");
-
-  const messages = {
-    explain:"Understanding code structure...",
-    errors:"Scanning for potential errors...",
-    optimize:"Reviewing optimization opportunities...",
-    fix:"Applying safe code corrections..."
-  };
-
-  showLoading(messages[action] || "Analyzing code...");
-
-  try {
-    const response = await fetch("/api/analyze", {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({code, action})
-    });
-
-    const data = await response.json();
-
-    if (!response.ok || !data.success) {
-      throw new Error(data.error || "Analysis failed.");
-    }
-
-    currentResult = data.result || "Analysis completed.";
-    $("resultText").textContent = currentResult;
-    $("languageBadge").textContent = (data.language || "Unknown").toUpperCase();
-
-    if (action === "fix") {
-      correctedCode = data.corrected_code || "";
-      $("correctedCode").textContent = correctedCode;
-      $("correctedPanel").classList.remove("hidden");
-    }
-
-    showResult();
-    $("resultStatus").textContent = "COMPLETE";
-
-    vibrate([20,40,20]);
-    showToast(action === "fix" ? "Code correction completed." : "Analysis completed successfully.");
-
-  } catch (error) {
-    $("loadingState").classList.add("hidden");
-    $("emptyState").classList.remove("hidden");
-    $("resultStatus").textContent = "ERROR";
-    showToast(error.message || "Could not connect to CODEX.", "error");
-    vibrate([40,50,40]);
-  }
-}
-
-document.querySelectorAll("[data-action]").forEach(button => {
-  button.addEventListener("click", () => analyzeCode(button.dataset.action));
-});
-
-document.querySelectorAll("[data-nav]").forEach(button => {
-  button.addEventListener("click", () => {
-    const section = button.dataset.nav;
-    vibrate(12);
-
-    document.querySelectorAll("[data-nav]").forEach(item => {
-      item.classList.toggle("active", item.dataset.nav === section);
-    });
-
-    if (["explain","errors","optimize","fix"].includes(section)) {
-      analyzeCode(section);
-    } else if (section === "about") {
-      showToast("CODEX AI V2 · Free local developer toolkit.");
-    } else {
-      document.querySelector(".workspace").scrollIntoView({
-        behavior:"smooth",
-        block:"start"
-      });
-    }
-  });
-});
-
-$("clearBtn").addEventListener("click", () => {
-  vibrate(15);
-  codeInput.value = "";
-  currentResult = "";
-  correctedCode = "";
-
-  $("resultText").textContent = "";
-  $("correctedCode").textContent = "";
-  $("resultState").classList.add("hidden");
-  $("correctedPanel").classList.add("hidden");
-  $("loadingState").classList.add("hidden");
-  $("emptyState").classList.remove("hidden");
-  $("resultStatus").textContent = "WAITING";
-
-  updateEditor();
-  showToast("Editor cleared.");
-});
-
-$("sampleBtn").addEventListener("click", () => {
-  vibrate(15);
-  codeInput.value =
-`def greet(name):
-    message = "Hello, " + name
-    print(message)
-
-greet("Developer")
-
-# CODEX AI sample project`;
-
-  updateEditor();
-  showToast("Sample code loaded.");
-});
-
-async function copyText(value, message) {
-  if (!value) {
-    showToast("Nothing to copy.", "error");
-    return;
-  }
-
-  try {
-    if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(value);
-    } else {
-      const area = document.createElement("textarea");
-      area.value = value;
-      area.style.position = "fixed";
-      area.style.opacity = "0";
-      document.body.appendChild(area);
-      area.select();
-      const copied = document.execCommand("copy");
-      area.remove();
-      if (!copied) throw new Error("Copy failed");
-    }
-
-    vibrate(20);
-    showToast(message);
-  } catch {
-    showToast("Could not copy. Try selecting the text.", "error");
-  }
-}
-
-$("copyBtn").addEventListener("click", () => {
-  copyText(currentResult, "Result copied.");
-});
-
-$("copyCorrectedBtn").addEventListener("click", () => {
-  copyText(correctedCode, "Corrected code copied.");
-});
-
-$("downloadBtn").addEventListener("click", () => {
-  if (!currentResult) {
-    showToast("No report available to export.", "error");
-    return;
-  }
-
-  const report =
-`CODEX AI — V2 ANALYSIS REPORT
-=============================
-
-Action: ${currentAction.toUpperCase()}
-Date: ${new Date().toLocaleString()}
-
-ANALYSIS:
-${currentResult}
-
-${correctedCode ? "CORRECTED CODE:\n" + correctedCode : ""}
-
-=============================
-Generated by CODEX AI`;
-
-  const blob = new Blob([report], {type:"text/plain;charset=utf-8"});
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-
-  link.href = url;
-  link.download = "codex-ai-v2-report.txt";
-  link.click();
-
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-
-  vibrate(20);
-  showToast("Report exported successfully.");
-});
-
-updateEditor();
-
-fetch("/api/health")
-  .then(response => response.json())
-  .then(data => {
-    if (data.status === "online") {
-      console.log("CODEX AI V2 connected:", data.version);
-    }
-  })
-  .catch(() => console.warn("Backend connection unavailable."));
-</script>
-</body>
-</html>
+  </div>  
+</main>  
+</div>  <nav class="bottom-nav">  
+  <button class="active" data-nav="workspace"><span>⌘</span>Workspace</button>  
+  <button data-nav="explain"><span>◈</span>Explain</button>  
+  <button data-nav="errors"><span>⌕</span>Errors</button>  
+  <button data-nav="optimize"><span>⚡</span>Optimize</button>  
+  <button data-nav="fix"><span>✧</span>Fix</button>  
+</nav>  <div class="toast" id="toast"></div>  <script>  
+const $ = id => document.getElementById(id);  
+const codeInput = $("codeInput");  
+  
+let currentResult = "";  
+let currentAction = "explain";  
+let correctedCode = "";  
+let toastTimer;  
+  
+function vibrate(pattern = 15) {  
+  if ("vibrate" in navigator) navigator.vibrate(pattern);  
+}  
+  
+function showToast(message, type = "success") {  
+  const toast = $("toast");  
+  toast.textContent = message;  
+  toast.className = "toast show " + type;  
+  clearTimeout(toastTimer);  
+  toastTimer = setTimeout(() => toast.className = "toast", 2600);  
+}  
+  
+function escapeHTML(value) {  
+  return value.replace(/[&<>"']/g, char => ({  
+    "&":"&amp;",  
+    "<":"&lt;",  
+    ">":"&gt;",  
+    '"':"&quot;",  
+    "'":"&#39;"  
+  })[char]);  
+}  
+  
+function highlightCode(code) {  
+  const escaped = escapeHTML(code);  
+  const pattern = /(\/\/.*|#.*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|(\b(?:const|let|var|function|return|if|else|for|while|class|new|this|import|from|export|default|async|await|try|catch|throw|def|print|in|not|and|or|True|False|None|public|private|static|void|int|string|echo|include)\b)|(\b\d+(?:\.\d+)?\b)|(<\/?[\w-]+)|(\b[\w$]+(?=\s*\())/g;  
+  
+  return escaped.replace(pattern, (match, comment, string, keyword, number, tag, func) => {  
+    if (comment) return `<span class="token-comment">${comment}</span>`;  
+    if (string) return `<span class="token-string">${string}</span>`;  
+    if (keyword) return `<span class="token-keyword">${keyword}</span>`;  
+    if (number) return `<span class="token-number">${number}</span>`;  
+    if (tag) return `<span class="token-tag">${tag}</span>`;  
+    if (func) return `<span class="token-function">${func}</span>`;  
+    return match;  
+  });  
+}  
+  
+function updateEditor() {  
+  const code = codeInput.value;  
+  const lines = code.split("\n");  
+  
+  $("lineNumbers").textContent = lines.map((_, i) => i + 1).join("\n");  
+  $("lineCount").textContent = `${lines.length} lines · ${code.length} characters`;  
+  $("editorStatus").textContent = code.trim() ? "Code entered" : "Ready to analyze";  
+  
+  $("highlightLayer").innerHTML = highlightCode(code) + (code.endsWith("\n") ? " " : "");  
+  $("highlightLayer").scrollTop = codeInput.scrollTop;  
+  $("highlightLayer").scrollLeft = codeInput.scrollLeft;  
+  $("lineNumbers").scrollTop = codeInput.scrollTop;  
+  
+  if (!code.trim()) $("languageBadge").textContent = "AUTO DETECT";  
+}  
+  
+codeInput.addEventListener("input", updateEditor);  
+  
+codeInput.addEventListener("scroll", () => {  
+  $("highlightLayer").scrollTop = codeInput.scrollTop;  
+  $("highlightLayer").scrollLeft = codeInput.scrollLeft;  
+  $("lineNumbers").scrollTop = codeInput.scrollTop;  
+});  
+  
+codeInput.addEventListener("keydown", event => {  
+  if (event.key === "Tab") {  
+    event.preventDefault();  
+    const start = codeInput.selectionStart;  
+    const end = codeInput.selectionEnd;  
+    codeInput.setRangeText("    ", start, end, "end");  
+    updateEditor();  
+  }  
+  
+  if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {  
+    event.preventDefault();  
+    analyzeCode("explain");  
+  }  
+});  
+  
+function showResult() {  
+  $("emptyState").classList.add("hidden");  
+  $("loadingState").classList.add("hidden");  
+  $("resultState").classList.remove("hidden");  
+}  
+  
+function showLoading(message) {  
+  $("emptyState").classList.add("hidden");  
+  $("resultState").classList.add("hidden");  
+  $("loadingState").classList.remove("hidden");  
+  $("loadingText").textContent = message;  
+  $("resultStatus").textContent = "PROCESSING";  
+}  
+  
+async function analyzeCode(action) {  
+  const code = codeInput.value;  
+  
+  if (!code.trim()) {  
+    vibrate([30,40,30]);  
+    showToast("Please enter some code first.", "error");  
+    codeInput.focus();  
+    return;  
+  }  
+  
+  vibrate(18);  
+  currentAction = action;  
+  currentResult = "";  
+  correctedCode = "";  
+  
+  $("correctedPanel").classList.add("hidden");  
+  
+  const messages = {  
+    explain:"Understanding code structure...",  
+    errors:"Scanning for potential errors...",  
+    optimize:"Reviewing optimization opportunities...",  
+    fix:"Applying safe code corrections..."  
+  };  
+  
+  showLoading(messages[action] || "Analyzing code...");  
+  
+  try {  
+    const response = await fetch("/api/analyze", {  
+      method:"POST",  
+      headers:{"Content-Type":"application/json"},  
+      body:JSON.stringify({code, action})  
+    });  
+  
+    const data = await response.json();  
+  
+    if (!response.ok || !data.success) {  
+      throw new Error(data.error || "Analysis failed.");  
+    }  
+  
+    currentResult = data.result || "Analysis completed.";  
+    $("resultText").textContent = currentResult;  
+    $("languageBadge").textContent = (data.language || "Unknown").toUpperCase();  
+  
+    if (action === "fix") {  
+      correctedCode = data.corrected_code || "";  
+      $("correctedCode").textContent = correctedCode;  
+      $("correctedPanel").classList.remove("hidden");  
+    }  
+  
+    showResult();  
+    $("resultStatus").textContent = "COMPLETE";  
+  
+    vibrate([20,40,20]);  
+    showToast(action === "fix" ? "Code correction completed." : "Analysis completed successfully.");  
+  
+  } catch (error) {  
+    $("loadingState").classList.add("hidden");  
+    $("emptyState").classList.remove("hidden");  
+    $("resultStatus").textContent = "ERROR";  
+    showToast(error.message || "Could not connect to CODEX.", "error");  
+    vibrate([40,50,40]);  
+  }  
+}  
+  
+document.querySelectorAll("[data-action]").forEach(button => {  
+  button.addEventListener("click", () => analyzeCode(button.dataset.action));  
+});  
+  
+document.querySelectorAll("[data-nav]").forEach(button => {  
+  button.addEventListener("click", () => {  
+    const section = button.dataset.nav;  
+    vibrate(12);  
+  
+    document.querySelectorAll("[data-nav]").forEach(item => {  
+      item.classList.toggle("active", item.dataset.nav === section);  
+    });  
+  
+    if (["explain","errors","optimize","fix"].includes(section)) {  
+      analyzeCode(section);  
+    } else if (section === "about") {  
+      showToast("CODEX AI V2 · Free local developer toolkit.");  
+    } else {  
+      document.querySelector(".workspace").scrollIntoView({  
+        behavior:"smooth",  
+        block:"start"  
+      });  
+    }  
+  });  
+});  
+  
+$("clearBtn").addEventListener("click", () => {  
+  vibrate(15);  
+  codeInput.value = "";  
+  currentResult = "";  
+  correctedCode = "";  
+  
+  $("resultText").textContent = "";  
+  $("correctedCode").textContent = "";  
+  $("resultState").classList.add("hidden");  
+  $("correctedPanel").classList.add("hidden");  
+  $("loadingState").classList.add("hidden");  
+  $("emptyState").classList.remove("hidden");  
+  $("resultStatus").textContent = "WAITING";  
+  
+  updateEditor();  
+  showToast("Editor cleared.");  
+});  
+  
+$("sampleBtn").addEventListener("click", () => {  
+  vibrate(15);  
+  codeInput.value =  
+`def greet(name):  
+    message = "Hello, " + name  
+    print(message)  
+  
+greet("Developer")  
+  
+# CODEX AI sample project`;  
+  
+  updateEditor();  
+  showToast("Sample code loaded.");  
+});  
+  
+async function copyText(value, message) {  
+  if (!value) {  
+    showToast("Nothing to copy.", "error");  
+    return;  
+  }  
+  
+  try {  
+    if (navigator.clipboard && window.isSecureContext) {  
+      await navigator.clipboard.writeText(value);  
+    } else {  
+      const area = document.createElement("textarea");  
+      area.value = value;  
+      area.style.position = "fixed";  
+      area.style.opacity = "0";  
+      document.body.appendChild(area);  
+      area.select();  
+      const copied = document.execCommand("copy");  
+      area.remove();  
+      if (!copied) throw new Error("Copy failed");  
+    }  
+  
+    vibrate(20);  
+    showToast(message);  
+  } catch {  
+    showToast("Could not copy. Try selecting the text.", "error");  
+  }  
+}  
+  
+$("copyBtn").addEventListener("click", () => {  
+  copyText(currentResult, "Result copied.");  
+});  
+  
+$("copyCorrectedBtn").addEventListener("click", () => {  
+  copyText(correctedCode, "Corrected code copied.");  
+});  
+  
+$("downloadBtn").addEventListener("click", () => {  
+  if (!currentResult) {  
+    showToast("No report available to export.", "error");  
+    return;  
+  }  
+  
+  const report =  
+`CODEX AI — V2 ANALYSIS REPORT  
+=============================  
+  
+Action: ${currentAction.toUpperCase()}  
+Date: ${new Date().toLocaleString()}  
+  
+ANALYSIS:  
+${currentResult}  
+  
+${correctedCode ? "CORRECTED CODE:\n" + correctedCode : ""}  
+  
+=============================  
+Generated by CODEX AI`;  
+  
+  const blob = new Blob([report], {type:"text/plain;charset=utf-8"});  
+  const url = URL.createObjectURL(blob);  
+  const link = document.createElement("a");  
+  
+  link.href = url;  
+  link.download = "codex-ai-v2-report.txt";  
+  link.click();  
+  
+  setTimeout(() => URL.revokeObjectURL(url), 1000);  
+  
+  vibrate(20);  
+  showToast("Report exported successfully.");  
+});  
+  
+updateEditor();  
+  
+fetch("/api/health")  
+  .then(response => response.json())  
+  .then(data => {  
+    if (data.status === "online") {  
+      console.log("CODEX AI V2 connected:", data.version);  
+    }  
+  })  
+  .catch(() => console.warn("Backend connection unavailable."));  
+</script>  </body>  
+</html>  
